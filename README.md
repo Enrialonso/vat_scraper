@@ -19,7 +19,7 @@ playwright install
 
 ```cmd
 .\env\Scripts\activate
-python main.py
+python .\main.py
 ```
 
 ### Description:
