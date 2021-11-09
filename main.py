@@ -1,11 +1,15 @@
+from datetime import datetime as dt
+
 from playwright.sync_api import Playwright, sync_playwright
 
 
 def crawler(playwright: Playwright) -> None:
+    path_file = dt.now().strftime("output_%Y_%m_%d_%H_%M.csv")
+
     browser = playwright.chromium.launch(headless=True)
     context = browser.new_context()
     page = context.new_page()
-    with open('txt.txt', "r") as file:
+    with open('vat.txt', "r") as file:
         for line in file.readlines():
             line = line.replace('\n', '')
             flag = True
@@ -18,10 +22,10 @@ def crawler(playwright: Playwright) -> None:
                     page.click("text=Perform Search", timeout=1000)
                     flag = False
                 except Exception as error:
-                    print(f"Reload web!!!: {error}")
+                    print(f"Reload web!!!")
 
             page.wait_for_load_state("load")
-            with open("output.csv", "a") as csv:
+            with open(path_file, "a") as csv:
                 try:
                     table_ok = page.query_selector("//*[@id='scrollToSearchResults']")
                     rows = table_ok.query_selector_all("//tbody")
